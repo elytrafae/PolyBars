@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "polybars",
+  "version": "${version}",
+  "name": "PolyBars",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "LGPL-3.0",
+  "icon": "assets/polybars/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "xyz.elytrafae.mc.polybars.PolyBars"
+    ]
+  },
+  "mixins": [
+    "polybars.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
