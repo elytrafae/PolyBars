@@ -1,8 +1,10 @@
-- The bars are drifting again for some reason
-- Armor bar is completely broken, even if debug shows it should work... Wonder if this happens with ever bar?
 - Have to check if Javadocs are up to date
 - Change default hunger bar to use the new multi slice system
 - Change default health to also use the default multi slice system (maybe with bit masking, too?)
-
 - Make health-style bars able to adjust the number of drawn icons (clamped between 1 and 20?)
 - Actually, figure out a way to make the health bar (with absorption) not extend upward, but still convey amount of health accurately!
+
+
+COMPLETED:
+- The bars are drifting again for some reason (transparent margins were being cut)
+- Armor bar is completely broken, even if debug shows it should work... Wonder if this happens with ever bar? (faulty portion calc)

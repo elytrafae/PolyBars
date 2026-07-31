@@ -56,4 +56,14 @@ public class SpaceBuilder {
         comp.withStyle(style -> style.withoutShadow().withFont(new FontDescription.Resource(SPACE_FONT)));
         return comp;
     }
+
+    public static MutableComponent getSpaceComponent(int pixels) {
+        if (pixels > 0) {
+            return getPositiveSpaceComponent(pixels);
+        }
+        if (pixels < 0) {
+            return getNegativeSpaceComponent(-pixels);
+        }
+        return Component.empty();
+    }
 }

@@ -13,10 +13,7 @@ import xyz.elytrafae.mc.polybars.api.PolyBarSide;
 import xyz.elytrafae.mc.polybars.font.ComponentWidthCalculator;
 import xyz.elytrafae.mc.polybars.font.SpaceBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionBarMultiplexer {
@@ -70,58 +67,47 @@ public class ActionBarMultiplexer {
                 int rowIndex = entry.getKey();
                 List<PolyBarHolder> holdersInRow = entry.getValue();
 
-                List<PolyBar> activeLeftBars = new ArrayList<>();
+                Optional<PolyBar> leftBar = Optional.empty();
+                Optional<PolyBar> rightBar = Optional.empty();
+
                 for (PolyBarHolder holder : holdersInRow) {
                     if (holder.getAssignedSide() == PolyBarSide.LEFT) {
-                        holder.getActiveBar(player).ifPresent(activeLeftBars::add);
+                        leftBar = holder.getActiveBar(player);
+                    } else if (holder.getAssignedSide() == PolyBarSide.RIGHT) {
+                        rightBar = holder.getActiveBar(player);
                     }
                 }
 
-                List<PolyBar> activeRightBars = new ArrayList<>();
-                for (PolyBarHolder holder : holdersInRow) {
-                    if (holder.getAssignedSide() == PolyBarSide.RIGHT) {
-                        holder.getActiveBar(player).ifPresent(activeRightBars::add);
-                    }
-                }
-
-                if (activeLeftBars.isEmpty() && activeRightBars.isEmpty()) {
+                if (leftBar.isEmpty() && rightBar.isEmpty()) {
                     continue;
                 }
 
-                Identifier fontId = Identifier.fromNamespaceAndPath("polybars", "row_" + rowIndex);
-
-                MutableComponent leftComp = Component.empty();
-                for (PolyBar leftBar : activeLeftBars) {
-                    leftComp.append(leftBar.getBarComponent(player));
+                Component leftComp = Component.empty();
+                if (leftBar.isPresent()) {
+                    leftComp = leftBar.get().getBarComponent(player);
                 }
+
+                Component rightComp = Component.empty();
+                if (rightBar.isPresent()) {
+                    rightComp = rightBar.get().getBarComponent(player);
+                }
+
                 int effectiveLeftWidth = ComponentWidthCalculator.calculateWidth(leftComp, false);
-
-                MutableComponent rightComp = Component.empty();
-                for (PolyBar rightBar : activeRightBars) {
-                    rightComp.append(rightBar.getBarComponent(player));
-                }
                 int effectiveRightWidth = ComponentWidthCalculator.calculateWidth(rightComp, false);
+                System.out.println("Effective width: " + effectiveLeftWidth);
 
                 MutableComponent rowComp = Component.empty();
 
                 rowComp.append(SpaceBuilder.getNegativeSpaceComponent(CENTER_TO_HOTBAR_DISTANCE));
                 rowComp.append(leftComp);
                 int bridge = CENTER_TO_HOTBAR_DISTANCE * 2 - effectiveLeftWidth - effectiveRightWidth;
-                if (bridge < 0) {
-                    rowComp.append(SpaceBuilder.getNegativeSpaceComponent(-bridge));
-                } else if (bridge > 0) {
-                    rowComp.append(SpaceBuilder.getPositiveSpaceComponent(bridge));
-                }
+                rowComp.append(SpaceBuilder.getSpaceComponent(bridge));
                 rowComp.append(rightComp);
                 rowComp.append(SpaceBuilder.getNegativeSpaceComponent(CENTER_TO_HOTBAR_DISTANCE));
 
 
                 int netAdvance = ComponentWidthCalculator.calculateWidth(rowComp);
-                if (netAdvance > 0) {
-                    rowComp.append(SpaceBuilder.getNegativeSpaceComponent(netAdvance));
-                } else if (netAdvance < 0) {
-                    rowComp.append(SpaceBuilder.getPositiveSpaceComponent(-netAdvance));
-                }
+                rowComp.append(SpaceBuilder.getSpaceComponent(-netAdvance));
 
 
                 hud.append(rowComp);

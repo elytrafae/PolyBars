@@ -10,12 +10,13 @@ import xyz.elytrafae.mc.polybars.api.*;
 import xyz.elytrafae.mc.polybars.font.GlyphWidthRegistry;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -115,6 +116,13 @@ public class DynamicFontGenerator {
                     g2d.drawImage(slice, currentX, topPaddingRaw, null);
                     currentX += slice.getWidth();
                 }
+
+                // Add 1-pixel high line at top and bottom of canvas with 1/255 opacity so
+                // MC and Optifine does not trim transparent margins
+                g2d.setColor(new Color(255, 255, 255, 1));
+                g2d.fillRect(0, 0, totalWidth, 1);
+                g2d.fillRect(0, canvasRawHeight - 1, totalWidth, 1);
+
                 g2d.dispose();
 
                 try {
@@ -125,8 +133,7 @@ public class DynamicFontGenerator {
                     String pngPath = "assets/polybars/textures/font/row_" + rowIndex + "_p" + providerIndex + ".png";
                     builder.addData(pngPath, pngBytes);
 
-                    int guiFontHeight = targetHeight * 5;
-                    int fontHeight = Math.max(guiFontHeight, ascent);
+                    int fontHeight = targetHeight * 5;
 
                     Map<String, Object> providerSpec = new LinkedHashMap<>();
                     providerSpec.put("file", "polybars:font/row_" + rowIndex + "_p" + providerIndex + ".png");
@@ -259,7 +266,7 @@ public class DynamicFontGenerator {
     private static BufferedImage createFallbackTexture(int width, int height) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
-        g2d.setColor(java.awt.Color.MAGENTA);
+        g2d.setColor(Color.MAGENTA);
         g2d.fillRect(0, 0, width, height);
         g2d.dispose();
         return img;

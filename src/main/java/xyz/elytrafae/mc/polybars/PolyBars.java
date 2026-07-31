@@ -42,6 +42,7 @@ public class PolyBars implements ModInitializer {
             }
         });
 
+
         Identifier healthHolderId = Identifier.fromNamespaceAndPath(MODID, "health");
         PolyBarsApi.registerBarHolder(healthHolderId, PolyBarSide.LEFT, 100);
         PolyBarsApi.registerBar(healthHolderId, new HealthBarTest(
@@ -60,6 +61,7 @@ public class PolyBars implements ModInitializer {
                 10
         ));
 
+
         Identifier armorHolderId = Identifier.fromNamespaceAndPath(MODID, "armor");
         PolyBarsApi.registerBarHolder(armorHolderId, PolyBarSide.LEFT, 90);
         PolyBarsApi.registerBar(armorHolderId, new DefaultArmorBar(
@@ -67,6 +69,7 @@ public class PolyBars implements ModInitializer {
                 Identifier.fromNamespaceAndPath(MODID, "textures/bars/armor"),
                 10
         ));
+
 
         LOGGER.info("PolyBars Action Bar Multiplexer initialized successfully.");
     }

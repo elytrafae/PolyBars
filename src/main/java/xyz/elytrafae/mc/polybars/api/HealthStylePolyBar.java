@@ -14,7 +14,7 @@ import java.util.List;
  */
 public abstract class HealthStylePolyBar extends AbstractPolyBar {
 
-    public static final int ICON_COUNT = 10; // 10 whole icons (20 halves)
+    public static final int DEFAULT_ICON_COUNT = 10;
 
     public HealthStylePolyBar(Identifier id, Identifier fullTexture, Identifier halfTexture, Identifier emptyTexture, int priority) {
         super(id, List.of(
@@ -26,6 +26,17 @@ public abstract class HealthStylePolyBar extends AbstractPolyBar {
 
     public HealthStylePolyBar(Identifier id, Identifier fullTexture, Identifier halfTexture, Identifier emptyTexture) {
         this(id, fullTexture, halfTexture, emptyTexture, 0);
+    }
+
+    /**
+     * Gets the number of drawn icon containers for this bar.
+     * Defaults to 10.
+     *
+     * @param player Target player
+     * @return Number of icon containers (clamped between 1 and 20)
+     */
+    public int getIconCount(ServerPlayer player) {
+        return DEFAULT_ICON_COUNT;
     }
 
     /**
@@ -58,7 +69,7 @@ public abstract class HealthStylePolyBar extends AbstractPolyBar {
     }
 
     /**
-     * The slice index of all icons shown. Useful for varians
+     * The slice index of all icons shown. Useful for variants
      * (ex. regular hunger vs under the effects of the Hunger effect).
      * Defaults to 0
      *
@@ -79,20 +90,18 @@ public abstract class HealthStylePolyBar extends AbstractPolyBar {
         double max = getMaxValue(player);
         double val = getValue(player);
 
-        int adjusted_val = (int)Math.ceil(val/max) * (ICON_COUNT *2);
+        int totalIcons = getIconCount(player);
+        double ratio = max > 0 ? Math.clamp(val / max, 0.0, 1.0) : 0.0;
+        int adjusted_val = (int) Math.ceil(ratio * (totalIcons * 2));
         int iconIndex = getShownIconSliceIndex(player);
 
         MutableComponent barComp = Component.empty();
 
         int spacing = getIconSpacing(player);
 
-        for (int i = 0; i < ICON_COUNT; i++) {
+        for (int i = 0; i < totalIcons; i++) {
             if (i > 0 && spacing != 0) {
-                if (spacing < 0) {
-                    barComp.append(SpaceBuilder.getNegativeSpaceComponent(Math.abs(spacing)));
-                } else {
-                    barComp.append(SpaceBuilder.getPositiveSpaceComponent(spacing));
-                }
+                barComp.append(SpaceBuilder.getSpaceComponent(spacing));
             }
 
             double containerStart = i * 2.0;
