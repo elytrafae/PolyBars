@@ -36,6 +36,7 @@ bin/
 .vscode/
 
 # Logs & Crash Reports
+logs/
 *.log
 hs_err_pid*
 replay_pid*
