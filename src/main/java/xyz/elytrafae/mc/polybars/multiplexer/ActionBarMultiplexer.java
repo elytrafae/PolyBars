@@ -94,7 +94,6 @@ public class ActionBarMultiplexer {
 
                 int effectiveLeftWidth = ComponentWidthCalculator.calculateWidth(leftComp, false);
                 int effectiveRightWidth = ComponentWidthCalculator.calculateWidth(rightComp, false);
-                System.out.println("Effective width: " + effectiveLeftWidth);
 
                 MutableComponent rowComp = Component.empty();
 

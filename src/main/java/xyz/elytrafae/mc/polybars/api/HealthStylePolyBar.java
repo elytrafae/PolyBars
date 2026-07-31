@@ -16,16 +16,12 @@ public abstract class HealthStylePolyBar extends AbstractPolyBar {
 
     public static final int DEFAULT_ICON_COUNT = 10;
 
-    public HealthStylePolyBar(Identifier id, Identifier fullTexture, Identifier halfTexture, Identifier emptyTexture, int priority) {
+    public HealthStylePolyBar(Identifier id, Identifier fullTexture, Identifier halfTexture, Identifier emptyTexture, int sliceCount, int priority) {
         super(id, List.of(
-                new PolyBarTexture(fullTexture, 1, PolyTextureSliceMode.INDIVIDUAL),  // Texture index 0: Full
-                new PolyBarTexture(halfTexture, 1, PolyTextureSliceMode.INDIVIDUAL),  // Texture index 1: Half
-                new PolyBarTexture(emptyTexture, 1, PolyTextureSliceMode.INDIVIDUAL)  // Texture index 2: Empty
+                new PolyBarTexture(fullTexture, sliceCount, PolyTextureSliceMode.INDIVIDUAL),
+                new PolyBarTexture(halfTexture, sliceCount, PolyTextureSliceMode.INDIVIDUAL),
+                new PolyBarTexture(emptyTexture, sliceCount, PolyTextureSliceMode.INDIVIDUAL)
         ), priority);
-    }
-
-    public HealthStylePolyBar(Identifier id, Identifier fullTexture, Identifier halfTexture, Identifier emptyTexture) {
-        this(id, fullTexture, halfTexture, emptyTexture, 0);
     }
 
     /**
@@ -80,6 +76,19 @@ public abstract class HealthStylePolyBar extends AbstractPolyBar {
         return 0;
     }
 
+    /**
+     * Controls the icons' ordering.
+     * If false, draws from left to right (like health).
+     * If true, draws from right to left (like hunger).
+     * Returns false by default.
+     *
+     * @param player Target player
+     * @return The boolean described above.
+     */
+    public boolean isOrderReversed(ServerPlayer player) {
+        return false;
+    }
+
     @Override
     public boolean shouldDraw(ServerPlayer player) {
         return true;
@@ -95,25 +104,36 @@ public abstract class HealthStylePolyBar extends AbstractPolyBar {
         int adjusted_val = (int) Math.ceil(ratio * (totalIcons * 2));
         int iconIndex = getShownIconSliceIndex(player);
 
-        MutableComponent barComp = Component.empty();
-
         int spacing = getIconSpacing(player);
+        MutableComponent[] sliceComponents = new MutableComponent[totalIcons];
 
         for (int i = 0; i < totalIcons; i++) {
-            if (i > 0 && spacing != 0) {
-                barComp.append(SpaceBuilder.getSpaceComponent(spacing));
-            }
-
             double containerStart = i * 2.0;
             double remaining = adjusted_val - containerStart;
 
             if (remaining >= 2.0) {
-                barComp.append(getSliceComponent(0, iconIndex));
+                sliceComponents[i] = getSliceComponent(0, iconIndex);
             } else if (remaining >= 1.0) {
-                barComp.append(getSliceComponent(1, iconIndex));
+                sliceComponents[i] = getSliceComponent(1, iconIndex);
             } else {
-                barComp.append(getSliceComponent(2, iconIndex));
+                sliceComponents[i] = getSliceComponent(2, iconIndex);
             }
+        }
+
+        if (isOrderReversed(player)) {
+            for(int i = 0; i < sliceComponents.length / 2; i++) {
+                MutableComponent temp = sliceComponents[i];
+                sliceComponents[i] = sliceComponents[sliceComponents.length - i - 1];
+                sliceComponents[sliceComponents.length - i - 1] = temp;
+            }
+        }
+
+        MutableComponent barComp = Component.empty();
+        for (int i=0; i < sliceComponents.length; i++) {
+            if (i > 0 && spacing != 0) {
+                barComp.append(SpaceBuilder.getSpaceComponent(spacing));
+            }
+            barComp.append(sliceComponents[i]);
         }
 
         int color = getColor(player);

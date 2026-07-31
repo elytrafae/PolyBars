@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import xyz.elytrafae.mc.polybars.api.PolyBarHolder;
 import xyz.elytrafae.mc.polybars.api.PolyBarSide;
 import xyz.elytrafae.mc.polybars.api.PolyBarsApi;
+import xyz.elytrafae.mc.polybars.defaultbars.DefaultAirBar;
 import xyz.elytrafae.mc.polybars.defaultbars.DefaultArmorBar;
 import xyz.elytrafae.mc.polybars.defaultbars.DefaultHungerBar;
 import xyz.elytrafae.mc.polybars.emulator.PredictionEmulationHandler;
@@ -23,7 +24,7 @@ public class PolyBars implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("Initializing PolyBars Action Bar Multiplexer & Polymer Resource Pack...");
+        LOGGER.info("Initializing Action Bar Multiplexer & Polymer Resource Pack...");
 
         PolymerResourcePackUtils.addModAssets(MODID);
         PolymerResourcePackUtils.markAsRequired();
@@ -42,6 +43,7 @@ public class PolyBars implements ModInitializer {
             }
         });
 
+        LOGGER.info("Action Bar Multiplexer initialized successfully.");
 
         Identifier healthHolderId = Identifier.fromNamespaceAndPath(MODID, "health");
         PolyBarsApi.registerBarHolder(healthHolderId, PolyBarSide.LEFT, 100);
@@ -70,7 +72,15 @@ public class PolyBars implements ModInitializer {
                 10
         ));
 
+        Identifier airHolderId = Identifier.fromNamespaceAndPath(MODID, "air");
+        PolyBarsApi.registerBarHolder(airHolderId, PolyBarSide.RIGHT, 90);
+        PolyBarsApi.registerBar(airHolderId, new DefaultAirBar(
+                Identifier.fromNamespaceAndPath(MODID, "air"),
+                Identifier.fromNamespaceAndPath(MODID, "textures/bars/air"),
+                10
+        ));
 
-        LOGGER.info("PolyBars Action Bar Multiplexer initialized successfully.");
+        LOGGER.info("Initialized default bars");
+
     }
 }

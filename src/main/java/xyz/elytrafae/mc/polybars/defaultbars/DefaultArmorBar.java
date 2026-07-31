@@ -8,7 +8,7 @@ import xyz.elytrafae.mc.polybars.api.HealthStylePolyBar;
 
 public class DefaultArmorBar extends HealthStylePolyBar {
     public DefaultArmorBar(Identifier id, Identifier baseTextureId, int priority) {
-        super(id, baseTextureId.withSuffix("_full"), baseTextureId.withSuffix("_half"), baseTextureId.withSuffix("_empty"), priority);
+        super(id, baseTextureId.withSuffix("_full"), baseTextureId.withSuffix("_half"), baseTextureId.withSuffix("_empty"), 1, priority);
     }
 
     @Override
@@ -16,13 +16,16 @@ public class DefaultArmorBar extends HealthStylePolyBar {
         if (!(Attributes.ARMOR.value() instanceof RangedAttribute)) {
             return 30;
         }
-        System.out.println("Max Armor Value: " + ((RangedAttribute)Attributes.ARMOR.value()).getMaxValue());
         return ((RangedAttribute)Attributes.ARMOR.value()).getMaxValue();
     }
 
     @Override
     public double getValue(ServerPlayer player) {
-        System.out.println("Armor Value: " + player.getArmorValue());
         return player.getArmorValue();
+    }
+
+    @Override
+    public boolean shouldDraw(ServerPlayer player) {
+        return player.getArmorValue() > 0;
     }
 }
