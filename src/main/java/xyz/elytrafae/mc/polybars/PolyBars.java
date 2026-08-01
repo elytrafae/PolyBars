@@ -12,6 +12,7 @@ import xyz.elytrafae.mc.polybars.api.PolyBarSide;
 import xyz.elytrafae.mc.polybars.api.PolyBarsApi;
 import xyz.elytrafae.mc.polybars.defaultbars.DefaultAirBar;
 import xyz.elytrafae.mc.polybars.defaultbars.DefaultArmorBar;
+import xyz.elytrafae.mc.polybars.defaultbars.DefaultHealthBar;
 import xyz.elytrafae.mc.polybars.defaultbars.DefaultHungerBar;
 import xyz.elytrafae.mc.polybars.emulator.PredictionEmulationHandler;
 import xyz.elytrafae.mc.polybars.generator.DynamicFontGenerator;
@@ -47,13 +48,13 @@ public class PolyBars implements ModInitializer {
 
         Identifier healthHolderId = Identifier.fromNamespaceAndPath(MODID, "health");
         PolyBarsApi.registerBarHolder(healthHolderId, PolyBarSide.LEFT, 100);
-        PolyBarsApi.registerBar(healthHolderId, new HealthBarTest(
+
+        PolyBarsApi.registerBar(healthHolderId, new DefaultHealthBar(
                 Identifier.fromNamespaceAndPath(MODID, "health"),
-                Identifier.fromNamespaceAndPath(MODID, "textures/bars/stamina_full"),
-                Identifier.fromNamespaceAndPath(MODID, "textures/bars/stamina_half"),
-                Identifier.fromNamespaceAndPath(MODID, "textures/bars/stamina_empty"),
+                Identifier.fromNamespaceAndPath(MODID, "textures/bars/heart/"),
                 10
         ));
+
 
         Identifier foodHolderId = Identifier.fromNamespaceAndPath(MODID, "food");
         PolyBarsApi.registerBarHolder(foodHolderId, PolyBarSide.RIGHT, 100);
