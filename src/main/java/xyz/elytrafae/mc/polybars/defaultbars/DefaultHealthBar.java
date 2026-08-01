@@ -59,23 +59,6 @@ public class DefaultHealthBar extends AbstractPolyBar {
         int iconCount = Math.min((int)Math.ceil(maxValue/2.0), 10);
         int sliceIndex = (player.hurtTime % 4 <= 1 ? 0 : 2) + (player.level().getServer().isHardcore() ? 1 : 0);
 
-        MutableComponent bar = Component.empty();
-        MutableComponent containers = getBarLayer(iconCount*2, 0, 0, sliceIndex, iconCount);
-        MutableComponent resetti = SpaceBuilder.getSpaceComponent(-ComponentWidthCalculator.calculateWidth(containers, false));
-
-        bar.append(containers);
-        bar.append(resetti);
-
-        if (currValue > iconCount*2) {
-            MutableComponent belowBar = getBarLayer(iconCount*2, 9, 9, 0, iconCount).withColor(0x880000);
-            bar.append(belowBar);
-            bar.append(resetti.copy());
-            currValue %= (iconCount * 2);
-            if (currValue == 0) {
-                currValue = iconCount*2;
-            }
-        }
-
         int halfTextureIndex;
         if (player.hasEffect(MobEffects.WITHER)) {
             halfTextureIndex = 7;
@@ -85,6 +68,29 @@ public class DefaultHealthBar extends AbstractPolyBar {
             halfTextureIndex = 3;
         } else {
             halfTextureIndex = 1;
+        }
+
+        MutableComponent bar = Component.empty();
+        MutableComponent containers = getBarLayer(iconCount*2, 0, 0, sliceIndex, iconCount);
+        MutableComponent resetti = SpaceBuilder.getSpaceComponent(-ComponentWidthCalculator.calculateWidth(containers, false));
+
+        bar.append(containers);
+        bar.append(resetti);
+
+        if (currValue > iconCount*2) {
+            int totalBars = maxValue / (iconCount*2);
+            int barsBelow = currValue / (iconCount*2);
+            int tempTextureIndex = halfTextureIndex+1;
+            int colorTemp = (int)( ((double)totalBars - barsBelow)/totalBars * 0xAA + 0x44);
+            int color = (colorTemp << 16) + (colorTemp << 8) + colorTemp;
+
+            MutableComponent belowBar = getBarLayer(iconCount*2, tempTextureIndex, tempTextureIndex, sliceIndex, iconCount).withColor(color);
+            bar.append(belowBar);
+            bar.append(resetti.copy());
+            currValue %= (iconCount * 2);
+            if (currValue == 0) {
+                currValue = iconCount*2;
+            }
         }
 
         bar.append(getBarLayer(currValue, halfTextureIndex+1, halfTextureIndex, sliceIndex, iconCount));
