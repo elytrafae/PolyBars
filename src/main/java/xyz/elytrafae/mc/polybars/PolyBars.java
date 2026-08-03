@@ -18,6 +18,8 @@ import xyz.elytrafae.mc.polybars.emulator.PredictionEmulationHandler;
 import xyz.elytrafae.mc.polybars.generator.DynamicFontGenerator;
 import xyz.elytrafae.mc.polybars.multiplexer.ActionBarMultiplexer;
 
+import xyz.elytrafae.mc.polybars.defaultbars.DefaultVehicleHealthBar;
+
 public class PolyBars implements ModInitializer {
 
     public static final String MODID = "polybars";
@@ -62,6 +64,11 @@ public class PolyBars implements ModInitializer {
                 Identifier.fromNamespaceAndPath(MODID, "food"),
                 Identifier.fromNamespaceAndPath(MODID, "textures/bars/food"),
                 10
+        ));
+        PolyBarsApi.registerBar(foodHolderId, new DefaultVehicleHealthBar(
+                Identifier.fromNamespaceAndPath(MODID, "vehicle_health"),
+                Identifier.fromNamespaceAndPath(MODID, "textures/bars/heart/vehicle"),
+                20
         ));
 
 
