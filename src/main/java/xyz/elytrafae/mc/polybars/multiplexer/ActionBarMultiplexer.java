@@ -115,7 +115,10 @@ public class ActionBarMultiplexer {
 
         Component vanillaMessage = session.getCachedVanillaActionBar();
         if (vanillaMessage != null) {
+            int space = Math.round(ComponentWidthCalculator.calculateWidth(vanillaMessage, true) / 2f);
+            hud.append(SpaceBuilder.getSpaceComponent(-space));
             hud.append(vanillaMessage);
+            hud.append(SpaceBuilder.getSpaceComponent(-space));
         }
 
         return hud;

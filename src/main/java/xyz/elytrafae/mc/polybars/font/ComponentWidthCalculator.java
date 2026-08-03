@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ComponentWidthCalculator {
 
-    private record CharWithFont(char ch, Identifier fontId) {}
+    private record CharWithStyle(char ch, Identifier fontId, boolean isBold) {}
 
     public static int calculateWidth(Component component) {
         return calculateWidth(component, true);
@@ -19,20 +19,24 @@ public class ComponentWidthCalculator {
     public static int calculateWidth(Component component, boolean removeTrailingSpace) {
         if (component == null) return 0;
 
-        List<CharWithFont> chars = new ArrayList<>();
+        List<CharWithStyle> chars = new ArrayList<>();
         collectChars(component, null, chars);
         if (chars.isEmpty()) return 0;
 
         int totalWidth = 0;
         boolean lastWasNonSpace = false;
 
-        for (CharWithFont cf : chars) {
+        for (CharWithStyle cf : chars) {
             int spaceAdv = getSpaceAdvance(cf.ch);
             if (spaceAdv != 0) {
                 totalWidth += spaceAdv;
                 lastWasNonSpace = false;
             } else {
-                totalWidth += GlyphWidthRegistry.getWidth(cf.fontId, cf.ch) + 1;
+                int baseWidth = GlyphWidthRegistry.getWidth(cf.fontId(), cf.ch());
+                if (cf.isBold()) {
+                    baseWidth += 1;
+                }
+                totalWidth += baseWidth + 1;
                 lastWasNonSpace = true;
             }
         }
@@ -44,23 +48,27 @@ public class ComponentWidthCalculator {
         return totalWidth;
     }
 
-    private static void collectChars(Component comp, Identifier parentFontId, List<CharWithFont> list) {
-        Identifier currentFontId = parentFontId;
+    private static void collectChars(Component comp, Style parentStyle, List<CharWithStyle> list) {
+        if (comp == null) return;
 
-        Style style = comp.getStyle();
-        if (style != null && style.getFont() instanceof FontDescription.Resource resFont) {
+        Style compStyle = comp.getStyle();
+        Style currentStyle = parentStyle == null ? compStyle : (compStyle != null ? compStyle.applyTo(parentStyle) : parentStyle);
+
+        Identifier currentFontId = null;
+        if (currentStyle != null && currentStyle.getFont() instanceof FontDescription.Resource resFont) {
             currentFontId = resFont.id();
         }
+        boolean isBold = currentStyle != null && currentStyle.isBold();
 
         String text = getLiteralText(comp);
         if (text != null && !text.isEmpty()) {
             for (char ch : text.toCharArray()) {
-                list.add(new CharWithFont(ch, currentFontId));
+                list.add(new CharWithStyle(ch, currentFontId, isBold));
             }
         }
 
         for (Component sibling : comp.getSiblings()) {
-            collectChars(sibling, currentFontId, list);
+            collectChars(sibling, currentStyle, list);
         }
     }
 
@@ -90,10 +98,10 @@ public class ComponentWidthCalculator {
 
     public static boolean endsWithNonSpace(Component component) {
         if (component == null) return false;
-        List<CharWithFont> chars = new ArrayList<>();
+        List<CharWithStyle> chars = new ArrayList<>();
         collectChars(component, null, chars);
         if (chars.isEmpty()) return false;
-        return getSpaceAdvance(chars.get(chars.size() - 1).ch) == 0;
+        return getSpaceAdvance(chars.get(chars.size() - 1).ch()) == 0;
     }
 
     private static String getLiteralText(Component comp) {
