@@ -27,7 +27,7 @@ public class DefaultAirBar extends HealthStylePolyBar {
 
     @Override
     public boolean shouldDraw(ServerPlayer player) {
-        return player.getAirSupply() < player.getMaxAirSupply();
+        return player.getAirSupply() < player.getMaxAirSupply() && super.shouldDraw(player);
     }
 
 }

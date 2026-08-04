@@ -64,9 +64,4 @@ public class DefaultHealthBar extends LayeredHealthStylePolyBar {
         if (player.isFreezing()) return 3;
         return 1;
     }
-
-    @Override
-    public boolean shouldDraw(ServerPlayer player) {
-        return true;
-    }
 }

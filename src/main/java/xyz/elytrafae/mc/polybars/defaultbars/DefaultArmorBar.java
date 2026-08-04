@@ -26,6 +26,6 @@ public class DefaultArmorBar extends HealthStylePolyBar {
 
     @Override
     public boolean shouldDraw(ServerPlayer player) {
-        return player.getArmorValue() > 0;
+        return player.getArmorValue() > 0 && super.shouldDraw(player);
     }
 }

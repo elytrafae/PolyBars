@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,6 +78,11 @@ public abstract class AbstractPolyBar implements PolyBar {
             copy.add(list != null ? List.copyOf(list) : Collections.emptyList());
         }
         this.assignedGlyphsPerTexture = Collections.unmodifiableList(copy);
+    }
+
+    @Override
+    public boolean shouldDraw(ServerPlayer player) {
+        return !(player.isCreative() || player.isSpectator());
     }
 
     /**

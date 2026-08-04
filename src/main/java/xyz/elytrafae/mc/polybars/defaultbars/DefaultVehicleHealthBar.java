@@ -27,7 +27,7 @@ public class DefaultVehicleHealthBar extends LayeredHealthStylePolyBar {
 
     @Override
     public boolean shouldDraw(ServerPlayer player) {
-        return player.getVehicle() instanceof LivingEntity living && living.isAlive();
+        return player.getVehicle() instanceof LivingEntity living && living.isAlive() && super.shouldDraw(player);
     }
 
     @Override

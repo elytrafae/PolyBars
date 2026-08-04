@@ -90,11 +90,6 @@ public abstract class HealthStylePolyBar extends AbstractPolyBar {
     }
 
     @Override
-    public boolean shouldDraw(ServerPlayer player) {
-        return true;
-    }
-
-    @Override
     public Component getBarComponent(ServerPlayer player) {
         double max = getMaxValue(player);
         double val = getValue(player);
