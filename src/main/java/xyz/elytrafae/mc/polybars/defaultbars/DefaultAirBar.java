@@ -2,7 +2,6 @@ package xyz.elytrafae.mc.polybars.defaultbars;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
-import xyz.elytrafae.mc.polybars.HealthBarTest;
 import xyz.elytrafae.mc.polybars.api.HealthStylePolyBar;
 
 public class DefaultAirBar extends HealthStylePolyBar {
