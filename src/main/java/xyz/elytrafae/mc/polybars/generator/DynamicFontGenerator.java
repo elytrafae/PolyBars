@@ -38,7 +38,7 @@ public class DynamicFontGenerator {
     }
 
     public static void generateFontResources(ResourcePackBuilder builder) {
-        builder.addStringData("assets/polybars/font/space.json", buildSpaceFontJson());
+        //builder.addStringData("assets/polybars/font/space.json", buildSpaceFontJson());
 
         Map<Integer, List<PolyBarHolder>> rowsMap = PolyBarRegistry.getHoldersByRowOrdered();
         if (rowsMap.isEmpty()) {

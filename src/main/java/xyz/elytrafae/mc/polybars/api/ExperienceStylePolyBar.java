@@ -17,8 +17,8 @@ public abstract class ExperienceStylePolyBar extends AbstractPolyBar {
 
     public ExperienceStylePolyBar(Identifier id, Identifier bgTexture, Identifier fillTexture, int fillSlicesCount, int priority) {
         super(id, List.of(
-                new PolyBarTexture(bgTexture, 1, PolyTextureSliceMode.INCREMENTAL),
-                new PolyBarTexture(fillTexture, fillSlicesCount, PolyTextureSliceMode.INCREMENTAL)
+                new PolyBarTexture(bgTexture, 1, PolyTextureSliceMode.INDIVIDUAL),
+                new PolyBarTexture(fillTexture, fillSlicesCount, PolyTextureSliceMode.INDIVIDUAL)
         ), priority);
         this.fillSlicesCount = fillSlicesCount;
     }
@@ -53,10 +53,12 @@ public abstract class ExperienceStylePolyBar extends AbstractPolyBar {
         double max = getMaxValue(player);
         double val = getValue(player);
 
-        double ratio = max > 0 ? Math.min(1.0, Math.max(0.0, val / max)) : 0.0;
+        double ratio = max > 0 ? Math.clamp(val / max, 0.0, 1.0) : 0.0;
         int sliceIndex = (int) Math.round(ratio * (fillSlicesCount - 1));
 
         // Assembles the fill slice glyph corresponding to current progress
+        MutableComponent barComp = getSliceComponent(0, 0);
+
         MutableComponent barComp = getSliceComponent(1, sliceIndex);
 
         int color = getColor(player);
