@@ -204,9 +204,8 @@ public class DynamicFontGenerator {
         int sliceWidth = image.getWidth() / count;
 
         for (int i=0; i < count; i++) {
-            int x = barTex.mode().equals(PolyTextureSliceMode.INDIVIDUAL) ? i * sliceWidth : 0;
-            int w = barTex.mode().equals(PolyTextureSliceMode.INDIVIDUAL) ? sliceWidth : sliceWidth * (i+1);
-            slices.add(image.getSubimage(x, 0, w, h));
+            int x = i * sliceWidth;
+            slices.add(image.getSubimage(x, 0, sliceWidth, h));
         }
 
         return slices;
@@ -271,6 +270,4 @@ public class DynamicFontGenerator {
         g2d.dispose();
         return img;
     }
-
-
 }

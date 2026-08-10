@@ -5,7 +5,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import xyz.elytrafae.mc.polybars.api.LayeredHealthStylePolyBar;
 import xyz.elytrafae.mc.polybars.api.PolyBarTexture;
-import xyz.elytrafae.mc.polybars.api.PolyTextureSliceMode;
 
 import java.util.List;
 
@@ -13,9 +12,9 @@ public class DefaultVehicleHealthBar extends LayeredHealthStylePolyBar {
 
     public DefaultVehicleHealthBar(Identifier id, Identifier baseTextureId, int priority) {
         super(id, List.of(
-                new PolyBarTexture(baseTextureId.withSuffix("_container"), 1, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("_half"), 1, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("_full"), 1, PolyTextureSliceMode.INDIVIDUAL)
+                new PolyBarTexture(baseTextureId.withSuffix("_container"), 1),
+                new PolyBarTexture(baseTextureId.withSuffix("_half"), 1),
+                new PolyBarTexture(baseTextureId.withSuffix("_full"), 1)
         ), priority, 1);
     }
 

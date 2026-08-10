@@ -5,7 +5,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import xyz.elytrafae.mc.polybars.api.LayeredHealthStylePolyBar;
 import xyz.elytrafae.mc.polybars.api.PolyBarTexture;
-import xyz.elytrafae.mc.polybars.api.PolyTextureSliceMode;
 
 import java.util.List;
 
@@ -13,17 +12,17 @@ public class DefaultHealthBar extends LayeredHealthStylePolyBar {
 
     public DefaultHealthBar(Identifier id, Identifier baseTextureId, int priority) {
         super(id, List.of(
-                new PolyBarTexture(baseTextureId.withSuffix("container"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("half"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("full"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("frozen_half"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("frozen_full"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("poisoned_half"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("poisoned_full"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("withered_half"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("withered_full"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("absorbing_half"), 4, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(baseTextureId.withSuffix("absorbing_full"), 4, PolyTextureSliceMode.INDIVIDUAL)
+                new PolyBarTexture(baseTextureId.withSuffix("container"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("half"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("full"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("frozen_half"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("frozen_full"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("poisoned_half"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("poisoned_full"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("withered_half"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("withered_full"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("absorbing_half"), 4),
+                new PolyBarTexture(baseTextureId.withSuffix("absorbing_full"), 4)
         ), priority, 2);
     }
 

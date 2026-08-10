@@ -4,6 +4,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import xyz.elytrafae.mc.polybars.font.ComponentWidthCalculator;
+import xyz.elytrafae.mc.polybars.font.SpaceBuilder;
 
 import java.util.List;
 
@@ -17,8 +19,8 @@ public abstract class ExperienceStylePolyBar extends AbstractPolyBar {
 
     public ExperienceStylePolyBar(Identifier id, Identifier bgTexture, Identifier fillTexture, int fillSlicesCount, int priority) {
         super(id, List.of(
-                new PolyBarTexture(bgTexture, 1, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(fillTexture, fillSlicesCount, PolyTextureSliceMode.INDIVIDUAL)
+                new PolyBarTexture(bgTexture, fillSlicesCount),
+                new PolyBarTexture(fillTexture, fillSlicesCount)
         ), priority);
         this.fillSlicesCount = fillSlicesCount;
     }
@@ -54,21 +56,18 @@ public abstract class ExperienceStylePolyBar extends AbstractPolyBar {
         double val = getValue(player);
 
         double ratio = max > 0 ? Math.clamp(val / max, 0.0, 1.0) : 0.0;
-        int sliceIndex = (int) Math.round(ratio * (fillSlicesCount - 1));
+        int fillCount = (int) Math.round(ratio * fillSlicesCount);
 
-        // Assembles the fill slice glyph corresponding to current progress
-        MutableComponent barComp = getSliceComponent(0, 0);
+        MutableComponent barComp = Component.empty();
+        MutableComponent minusOneSpace = SpaceBuilder.getNegativeSpaceComponent(1);
 
-        MutableComponent barComp = getSliceComponent(1, sliceIndex);
+        for (int i=0; i < fillSlicesCount; i++) {
+            barComp.append(getSliceComponent(i < fillCount ? 1 : 0, i));
+            barComp.append(minusOneSpace.copy());
+        }
 
         int color = getColor(player);
-        barComp.withStyle(style -> {
-            var updated = style.withoutShadow();
-            if (color != 0xFFFFFF) {
-                updated = updated.withColor(color);
-            }
-            return updated;
-        });
+        barComp.withStyle(style -> style.withoutShadow().withColor(color));
 
         return barComp;
     }

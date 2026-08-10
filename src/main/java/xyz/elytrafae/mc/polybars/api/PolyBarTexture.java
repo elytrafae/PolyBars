@@ -9,9 +9,8 @@ import java.util.Objects;
  *
  * @param textureId Namespaced ID pointing to the texture asset (e.g. "mymod:textures/gui/mana_bar.png")
  * @param slicesCount Number of slices the texture should be divided into
- * @param mode How the slices are created
  */
-public record PolyBarTexture(Identifier textureId, int slicesCount, PolyTextureSliceMode mode) {
+public record PolyBarTexture(Identifier textureId, int slicesCount) {
 
     public PolyBarTexture {
         Objects.requireNonNull(textureId, "BarTexture textureId cannot be null");
@@ -23,7 +22,7 @@ public record PolyBarTexture(Identifier textureId, int slicesCount, PolyTextureS
     /**
      * Helper constructor creating a BarTexture from a namespace and path string.
      */
-    public static PolyBarTexture of(String namespace, String path, int slicesCount, PolyTextureSliceMode mode) {
-        return new PolyBarTexture(Identifier.fromNamespaceAndPath(namespace, path), slicesCount, mode);
+    public static PolyBarTexture of(String namespace, String path, int slicesCount) {
+        return new PolyBarTexture(Identifier.fromNamespaceAndPath(namespace, path), slicesCount);
     }
 }

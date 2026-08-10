@@ -18,9 +18,9 @@ public abstract class HealthStylePolyBar extends AbstractPolyBar {
 
     public HealthStylePolyBar(Identifier id, Identifier fullTexture, Identifier halfTexture, Identifier emptyTexture, int sliceCount, int priority) {
         super(id, List.of(
-                new PolyBarTexture(fullTexture, sliceCount, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(halfTexture, sliceCount, PolyTextureSliceMode.INDIVIDUAL),
-                new PolyBarTexture(emptyTexture, sliceCount, PolyTextureSliceMode.INDIVIDUAL)
+                new PolyBarTexture(fullTexture, sliceCount),
+                new PolyBarTexture(halfTexture, sliceCount),
+                new PolyBarTexture(emptyTexture, sliceCount)
         ), priority);
     }
 

@@ -35,12 +35,12 @@ public abstract class AbstractPolyBar implements PolyBar {
         this(id, List.of(texture), priority);
     }
 
-    public AbstractPolyBar(Identifier id, Identifier textureId, int slicesCount, PolyTextureSliceMode sliceMode, int priority) {
-        this(id, new PolyBarTexture(textureId, slicesCount, sliceMode), priority);
+    public AbstractPolyBar(Identifier id, Identifier textureId, int slicesCount, int priority) {
+        this(id, new PolyBarTexture(textureId, slicesCount), priority);
     }
 
     public AbstractPolyBar(Identifier id, Identifier textureId, int slicesCount) {
-        this(id, textureId, slicesCount, PolyTextureSliceMode.INDIVIDUAL, 0);
+        this(id, textureId, slicesCount, 0);
     }
 
     @Override
