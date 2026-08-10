@@ -94,7 +94,7 @@ public class PolyBars implements ModInitializer {
                 Identifier.fromNamespaceAndPath(MODID, "mana"),
                 Identifier.fromNamespaceAndPath(MODID, "textures/bars/mana_empty"),
                 Identifier.fromNamespaceAndPath(MODID, "textures/bars/mana_full"),
-                71,
+                27,
                 10
         ));
 

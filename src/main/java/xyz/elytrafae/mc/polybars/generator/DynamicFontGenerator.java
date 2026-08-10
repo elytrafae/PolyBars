@@ -61,7 +61,7 @@ public class DynamicFontGenerator {
                     rowIndex, holdersInRow.size(), barsInRow.size());
 
             Identifier rowFontId = Identifier.fromNamespaceAndPath("polybars", "row_" + rowIndex);
-            int baseAscent = -8;
+            int baseAscent = -17;
             int ascent = baseAscent + (rowIndex * 10);
             List<Map<String, Object>> providerJsonList = new ArrayList<>();
             int providerIndex = 0;
@@ -105,7 +105,7 @@ public class DynamicFontGenerator {
                 }
 
                 int canvasRawHeight = maxSliceRawHeight * 5;
-                int topPaddingRaw = maxSliceRawHeight * 2;
+                int topPaddingRaw = maxSliceRawHeight;
 
                 int totalWidth = barSlices.stream().mapToInt(BufferedImage::getWidth).sum();
                 BufferedImage atlasImage = new BufferedImage(totalWidth, canvasRawHeight, BufferedImage.TYPE_INT_ARGB);
