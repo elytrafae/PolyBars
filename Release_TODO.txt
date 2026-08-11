@@ -1,7 +1,3 @@
-- Take screenshots with the bars (including overflowing/underflowing health, saturation, breath, etc)
-- Remove the test bar and its textures.
-- Write documentation. Put the test bar texture into the documentation as aid.
-    - Make sure to list technical limitations, such as having to aim for a GIU height of 9 or all slices within a bar needing to have the same exact width
 - Make a mod icon
 - Prepare PolyNutrition for compatibility
 - (OPTIONAL) Find a way to auto-update both this and PolyNutrition whenever a new release of Polymer releases
@@ -9,3 +5,6 @@
 DONE:
 - Change how the font generator adds space to 1x space above and 3x space below, adjust initial adjust accordingly.
 - Remake the example XP bar texture to be of a proper width
+- Take screenshots with the bars
+- Write documentation. Put the test bar texture into the documentation as aid.
+- Remove the test bar and its textures.

@@ -88,16 +88,6 @@ public class PolyBars implements ModInitializer {
                 10
         ));
 
-        Identifier manaHolderId = Identifier.fromNamespaceAndPath(MODID, "mana");
-        PolyBarsApi.registerBarHolder(manaHolderId, PolyBarSide.RIGHT, 95);
-        PolyBarsApi.registerBar(manaHolderId, new ManaTest(
-                Identifier.fromNamespaceAndPath(MODID, "mana"),
-                Identifier.fromNamespaceAndPath(MODID, "textures/bars/mana_empty"),
-                Identifier.fromNamespaceAndPath(MODID, "textures/bars/mana_full"),
-                27,
-                10
-        ));
-
         LOGGER.info("Initialized default bars");
 
     }
